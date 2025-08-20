@@ -10,6 +10,9 @@ import {
   PenTool,
   Code,
   CheckCircle,
+  MessageSquareText,
+  LayoutDashboard,
+  ShieldCheck,
 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
@@ -41,24 +44,43 @@ const services = [
 // Process data
 const processSteps = [
     {
-        icon: <Search size={30} />,
+        icon: <Search size={24} />,
         title: "1. Discovery & Strategy",
         description: "We start by understanding your business and goals to create a tailored strategy."
     },
     {
-        icon: <PenTool size={30} />,
+        icon: <PenTool size={24} />,
         title: "2. Design & Prototyping",
         description: "We design a visually stunning and user-friendly interface, providing mockups for your approval."
     },
     {
-        icon: <Code size={30} />,
+        icon: <Code size={24} />,
         title: "3. Development & Coding",
         description: "Our developers bring the design to life with clean, efficient code using the latest technologies."
     },
     {
-        icon: <CheckCircle size={30} />,
+        icon: <CheckCircle size={24} />,
         title: "4. Launch & Optimization",
         description: "After rigorous testing, we deploy your website and monitor its performance for continuous improvement."
+    }
+];
+
+// How it works data
+const partnershipSteps = [
+    {
+        icon: <MessageSquareText size={40} className="text-accent"/>,
+        title: "Initial Contact",
+        description: "Reach out to us with your project idea. We'll schedule a free consultation to discuss your vision, goals, and requirements in detail."
+    },
+    {
+        icon: <LayoutDashboard size={40} className="text-accent"/>,
+        title: "Live Demo Development",
+        description: "We build a functional demo of your website (up to 70% complete). This allows you to see and interact with the design before full commitment."
+    },
+    {
+        icon: <ShieldCheck size={40} className="text-accent"/>,
+        title: "Monthly Maintenance",
+        description: "Starting from R500/month, we provide continuous support including Service Level Agreements (SLAs), security, and UI updates to keep your site fresh."
     }
 ];
 
@@ -135,28 +157,39 @@ const WhatWeDoPage = () => {
         </div>
       </section>
 
-      {/* Our Process Section */}
+      {/* FIXED: Our Development Process Section */}
        <section className="py-20 bg-primary">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">Our Development Process</h2>
-            <div className="relative wrap overflow-hidden p-10 h-full">
-                <div className="absolute border-opacity-20 border-gray-700 h-full border" style={{left: '50%'}}></div>
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">Our Technical Process</h2>
+            <div className="relative">
+                {/* Vertical line for desktop */}
+                <div className="hidden md:block absolute w-0.5 h-full bg-gray-700 top-0 left-1/2 -translate-x-1/2"></div>
+
                 {processSteps.map((step, index) => (
-                    <motion.div 
+                    <motion.div
                         key={index}
                         initial={{ opacity: 0, y: 50 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: index * 0.2 }}
-                        className={`mb-8 flex justify-between items-center w-full ${index % 2 === 0 ? 'flex-row-reverse left-timeline' : 'right-timeline'}`}
+                        transition={{ duration: 0.5, delay: index * 0.2 }}
+                        className="mb-12 md:mb-8"
                     >
-                        <div className="order-1 w-5/12"></div>
-                        <div className="z-10 flex items-center order-1 bg-accent shadow-xl w-14 h-14 rounded-full">
-                            <h1 className="mx-auto font-semibold text-lg text-white">{step.icon}</h1>
-                        </div>
-                        <div className="order-1 bg-secondary rounded-lg shadow-xl w-5/12 px-6 py-4">
-                            <h3 className="font-bold text-white text-xl">{step.title}</h3>
-                            <p className="text-sm leading-snug tracking-wide text-text-secondary text-opacity-100">{step.description}</p>
+                        <div className="flex flex-col md:flex-row items-center">
+                            {/* Desktop layout */}
+                            <div className={`hidden md:flex w-5/12 ${index % 2 === 0 ? 'justify-end' : 'justify-start'}`}>
+                                {index % 2 === 0 && <div className="p-6 bg-secondary rounded-lg w-full max-w-sm text-right">{step.description}</div>}
+                            </div>
+                            
+                            <div className="relative z-10">
+                                <div className="w-12 h-12 rounded-full bg-accent flex items-center justify-center text-white">{step.icon}</div>
+                            </div>
+                            
+                            <div className={`w-full md:w-5/12 ${index % 2 === 0 ? 'md:pl-10' : 'md:pr-10 md:order-first'}`}>
+                                <h3 className="font-bold text-xl mb-2 mt-4 md:mt-0">{step.title}</h3>
+                                {/* Mobile-only description */}
+                                <p className="md:hidden text-text-secondary">{step.description}</p>
+                                {index % 2 !== 0 && <div className="hidden md:block p-6 bg-secondary rounded-lg w-full max-w-sm">{step.description}</div>}
+                            </div>
                         </div>
                     </motion.div>
                 ))}
@@ -164,8 +197,34 @@ const WhatWeDoPage = () => {
           </div>
         </section>
 
+      {/* NEW: How It Works & Maintenance Section */}
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">How It Works</h2>
+            <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+                className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center"
+            >
+                {partnershipSteps.map((step, index) => (
+                    <motion.div
+                        key={index}
+                        variants={itemVariants}
+                        className="bg-secondary p-8 rounded-lg border border-gray-700 flex flex-col items-center"
+                    >
+                        <div className="mb-4">{step.icon}</div>
+                        <h3 className="text-2xl font-bold mb-3">{step.title}</h3>
+                        <p className="text-text-secondary flex-grow">{step.description}</p>
+                    </motion.div>
+                ))}
+            </motion.div>
+        </div>
+      </section>
+
       {/* CTA Section */}
-      <section className="py-20 text-center">
+      <section className="py-20 text-center bg-primary">
         <div className="container mx-auto px-4">
             <motion.h2 
                 initial={{ y: 20, opacity: 0 }}
