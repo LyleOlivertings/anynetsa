@@ -16,7 +16,7 @@ const Footer = () => {
         duration: 0.8,
         ease: "easeOut",
         staggerChildren: 0.2,
-      },
+      } as any, // cast to any to bypass strict type mismatch for ease
     },
   };
 
