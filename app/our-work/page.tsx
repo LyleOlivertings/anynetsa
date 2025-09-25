@@ -8,19 +8,16 @@ const portfolioData = [
   {
     title: "Scottsdene High School",
     description: "A modern, comprehensive informational hub for students, parents, and staff, featuring a clean design and easy navigation.",
-    imageUrl: "/sd-gif.gif",
     liveUrl: "https://scottsdenehigh.vercel.app/",
   },
   {
     title: "SD Content Management System",
     description: "A custom-built CMS empowering school staff to manage website content, news, and events effortlessly.",
-    imageUrl: "/sd-cms.gif",
     liveUrl: "https://sd-cms.vercel.app/",
   },
   {
     title: "Muizenberg High School",
     description: "A professional and engaging website serving as a central source for school information, admissions, and community updates.",
-    imageUrl: "/mhs.gif",
     liveUrl: "https://www.muizenberghigh.org/",
   },
   {
