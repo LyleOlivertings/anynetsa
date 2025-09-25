@@ -1,44 +1,45 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
+import { render } from "@react-email/render";
 import ContactFormEmail from "@/email/ContactFormEmail";
 import ThankYouEmail from "@/email/ThankYouEmail";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Create a transporter object using the SMTP transport
+const transporter = nodemailer.createTransport({
+  service: "gmail", // Use the Gmail service
+  auth: {
+    user: process.env.EMAIL_SERVER_USER, // Your Gmail address from .env
+    pass: process.env.EMAIL_SERVER_PASSWORD, // Your App Password from .env
+  },
+});
 
 export async function POST(req: NextRequest) {
+  const { name, email, message } = await req.json();
+
   try {
-    const { name, email, message } = await req.json();
-    console.log("Received request:", { name, email });
+    // Render the React components to HTML strings
+    const contactEmailHtml = await render(
+      ContactFormEmail({ name, email, message })
+    );
+    const thankYouEmailHtml = await render(ThankYouEmail({ name }));
 
     // 1. Send email to your personal inbox
-    console.log("Attempting to send contact form email...");
-    const { data: contactData, error: contactError } = await resend.emails.send({
-      from: "The AnyNetSA Team <onboarding@resend.dev>",
+    const contactMailOptions = {
+      from: `"Website Contact" <${process.env.EMAIL_SERVER_USER}>`,
       to: "oliverlyle29@gmail.com",
       subject: `New message from ${name}`,
-      react: ContactFormEmail({ name, email, message }),
-    });
-
-    if (contactError) {
-      console.error("Error sending contact form email:", contactError);
-      return NextResponse.json({ message: "Failed to send contact email.", error: contactError }, { status: 500 });
-    }
-    console.log("Contact form email sent successfully:", contactData);
+      html: contactEmailHtml,
+    };
+    await transporter.sendMail(contactMailOptions);
 
     // 2. Send thank you email to the user
-    console.log("Attempting to send thank you email...");
-    const { data: thankYouData, error: thankYouError } = await resend.emails.send({
-      from: "The AnyNetSA Team <onboarding@resend.dev>",
+    const thankYouMailOptions = {
+      from: `"The AnyNetSA Team" <${process.env.EMAIL_SERVER_USER}>`,
       to: email,
       subject: "Thank you for contacting us!",
-      react: ThankYouEmail({ name }),
-    });
-
-    if (thankYouError) {
-      console.error("Error sending thank you email:", thankYouError);
-      return NextResponse.json({ message: "Failed to send thank you email.", error: thankYouError }, { status: 500 });
-    }
-    console.log("Thank you email sent successfully:", thankYouData);
+      html: thankYouEmailHtml,
+    };
+    await transporter.sendMail(thankYouMailOptions);
 
     return NextResponse.json(
       { message: "Emails sent successfully!" },
@@ -46,7 +47,6 @@ export async function POST(req: NextRequest) {
     );
   } catch (error) {
     console.error("A critical error occurred in the API route:", error);
-    // Return a generic error response, but log the detailed error on the server
     return NextResponse.json(
       { message: "An unexpected error occurred." },
       { status: 500 }

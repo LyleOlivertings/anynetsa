@@ -29,7 +29,7 @@ export const ThankYouEmail = ({ name }: ThankYouEmailProps) => (
         <Section style={{ textAlign: "center", padding: "20px 0" }}>
           {/* Note: You might need to host your logo online for it to appear in emails */}
           <Img
-            src={`https://i.imgur.com/your-logo-image-url.png`} // Replace with a hosted URL of your white logo
+            src={`https://imgur.com/a/KPcT4pV`} // Replace with a hosted URL of your white logo
             width="150"
             alt="AnyNet SA Logo"
             style={logo}
