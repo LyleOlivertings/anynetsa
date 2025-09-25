@@ -1,7 +1,42 @@
 "use client";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 const Contact = () => {
+  const [status, setStatus] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus("Sending...");
+
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      message: formData.get("message"),
+    };
+
+    try {
+      const response = await fetch("/api/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        setStatus("Message sent successfully!");
+        (e.target as HTMLFormElement).reset();
+      } else {
+        setStatus("Failed to send message. Please try again.");
+      }
+    } catch (error) {
+      console.error(error);
+      setStatus("Failed to send message. Please try again.");
+    }
+  };
+
   return (
     <section id="contact" className="py-20 bg-background">
       <div className="container mx-auto px-4">
@@ -21,7 +56,8 @@ const Contact = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-center text-text-secondary max-w-2xl mx-auto mb-12"
         >
-          Fill out the form below or send us an email, and we'll get back to you as soon as possible to discuss your needs.
+          Fill out the form below or send us an email, and we'll get back to
+          you as soon as possible to discuss your needs.
         </motion.p>
         <motion.form
           initial={{ opacity: 0, y: 50 }}
@@ -29,18 +65,46 @@ const Contact = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.4 }}
           className="max-w-xl mx-auto bg-primary p-8 rounded-lg border border-gray-700"
+          onSubmit={handleSubmit}
         >
           <div className="mb-4">
-            <label htmlFor="name" className="block text-text-secondary mb-2">Name</label>
-            <input type="text" id="name" className="w-full bg-secondary p-3 rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-accent" required />
+            <label htmlFor="name" className="block text-text-secondary mb-2">
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              className="w-full bg-secondary p-3 rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-accent"
+              required
+            />
           </div>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-text-secondary mb-2">Email</label>
-            <input type="email" id="email" className="w-full bg-secondary p-3 rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-accent" required />
+            <label htmlFor="email" className="block text-text-secondary mb-2">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              className="w-full bg-secondary p-3 rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-accent"
+              required
+            />
           </div>
           <div className="mb-6">
-            <label htmlFor="message" className="block text-text-secondary mb-2">Message</label>
-            <textarea id="message" rows={5} className="w-full bg-secondary p-3 rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-accent" required></textarea>
+            <label
+              htmlFor="message"
+              className="block text-text-secondary mb-2"
+            >
+              Message
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              rows={5}
+              className="w-full bg-secondary p-3 rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-accent"
+              required
+            ></textarea>
           </div>
           <button
             type="submit"
@@ -48,6 +112,7 @@ const Contact = () => {
           >
             Send Message
           </button>
+          {status && <p className="text-center mt-4">{status}</p>}
         </motion.form>
       </div>
     </section>

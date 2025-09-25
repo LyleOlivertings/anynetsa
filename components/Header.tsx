@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -61,16 +62,22 @@ const Header = () => {
     <>
       <header
         className={`sticky top-0 z-50 transition-all duration-300 ${
-          isScrolled ? "bg-primary/95 backdrop-blur-lg border-b border-gray-800" : "bg-transparent"
+          isScrolled
+            ? "bg-primary/95 backdrop-blur-lg border-b border-gray-800"
+            : "bg-transparent"
         }`}
       >
         <div className="container mx-auto flex items-center justify-between p-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <Link href="/" className="text-2xl font-bold text-accent">
-              AnyNet SA
+              <Image src="/logo2.png" alt="AnyNet SA Logo" width={120} height={40} />
             </Link>
           </motion.div>
-          
+
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
@@ -83,8 +90,12 @@ const Header = () => {
               </Link>
             ))}
           </nav>
-          
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
             <Link
               href="/#contact"
               className="hidden md:inline-block bg-accent hover:bg-accent-hover text-white font-bold py-2 px-5 rounded-lg transition-colors"
@@ -101,7 +112,7 @@ const Header = () => {
           </div>
         </div>
       </header>
-      
+
       {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
@@ -123,14 +134,14 @@ const Header = () => {
                 </Link>
               </motion.div>
             ))}
-             <motion.div variants={linkVariants} className="pt-8">
-                <Link
-                  href="/#contact"
-                  className="bg-accent hover:bg-accent-hover text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors"
-                >
-                  Get a Quote
-                </Link>
-              </motion.div>
+            <motion.div variants={linkVariants} className="pt-8">
+              <Link
+                href="/#contact"
+                className="bg-accent hover:bg-accent-hover text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors"
+              >
+                Get a Quote
+              </Link>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

@@ -8,13 +8,14 @@ const config = {
   theme: {
     extend: {
       colors: {
-        background: "#121212",
-        primary: "#1E1E1E",
-        secondary: "#2A2A2A",
-        accent: "#007BFF",
-        "accent-hover": "#0056b3",
-        text: "#E0E0E0",
-        "text-secondary": "#A0A0A0",
+        background: "#1A202C",
+        primary: "#2D3748",
+        secondary: "#4A5568",
+        accent: "#004AAD",
+        "accent-hover": "#007BFF",
+        "vibrant-green": "#00C169",
+        text: "#E2E8F0",
+        "text-secondary": "#A0AEC0",
       },
       animation: {
         "fade-in": "fadeIn 1s ease-in-out",
