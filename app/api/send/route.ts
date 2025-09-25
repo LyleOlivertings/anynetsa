@@ -1,45 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
-import nodemailer from "nodemailer";
-import { render } from "@react-email/render";
+import { Resend } from "resend";
 import ContactFormEmail from "@/email/ContactFormEmail";
 import ThankYouEmail from "@/email/ThankYouEmail";
 
-// Create a transporter object using the SMTP transport
-const transporter = nodemailer.createTransport({
-  service: "gmail", // Use the Gmail service
-  auth: {
-    user: process.env.EMAIL_SERVER_USER, // Your Gmail address from .env
-    pass: process.env.EMAIL_SERVER_PASSWORD, // Your App Password from .env
-  },
-});
+// Use the RESEND_API_KEY from your environment variables
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: NextRequest) {
   const { name, email, message } = await req.json();
 
   try {
-    // Render the React components to HTML strings
-    const contactEmailHtml = await render(
-      ContactFormEmail({ name, email, message })
-    );
-    const thankYouEmailHtml = await render(ThankYouEmail({ name }));
-
-    // 1. Send email to your personal inbox
-    const contactMailOptions = {
-      from: `"Website Contact" <${process.env.EMAIL_SERVER_USER}>`,
-      to: "oliverlyle29@gmail.com",
+    // Send email to your personal inbox
+    await resend.emails.send({
+      from: "The AnyNetSA Team <onboarding@resend.dev>",
+      to: "oliverlyle29@gmail.com", // Your personal email
       subject: `New message from ${name}`,
-      html: contactEmailHtml,
-    };
-    await transporter.sendMail(contactMailOptions);
+      react: ContactFormEmail({ name, email, message }),
+    });
 
-    // 2. Send thank you email to the user
-    const thankYouMailOptions = {
-      from: `"The AnyNetSA Team" <${process.env.EMAIL_SERVER_USER}>`,
+    // Send thank you email to the user
+    await resend.emails.send({
+      from: "The AnyNetSA Team <onboarding@resend.dev>",
       to: email,
       subject: "Thank you for contacting us!",
-      html: thankYouEmailHtml,
-    };
-    await transporter.sendMail(thankYouMailOptions);
+      react: ThankYouEmail({ name }),
+    });
 
     return NextResponse.json(
       { message: "Emails sent successfully!" },
