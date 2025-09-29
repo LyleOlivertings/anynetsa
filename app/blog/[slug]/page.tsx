@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation'; // Import notFound
+import { notFound } from 'next/navigation';
 import BlogPostLayout from '@/components/BlogPostLayout';
 
 // Define the Frontmatter type for type-safety
@@ -14,7 +14,6 @@ interface Frontmatter {
   image: string;
 }
 
-// This function is now more robust
 const getPostContent = (slug: string) => {
   const folder = path.join(process.cwd(), 'posts');
   const file = path.join(folder, `${slug}.md`);
@@ -24,16 +23,14 @@ const getPostContent = (slug: string) => {
     const matterResult = matter(content);
     return matterResult;
   } catch (error) {
-    // If the file doesn't exist or there's a read error, return null
     return null;
   }
 };
 
-// Generate metadata for each blog post
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const post = getPostContent(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const post = getPostContent(resolvedParams.slug);
 
-  // If post doesn't exist, don't generate metadata
   if (!post) {
     return {
       title: 'Post Not Found',
@@ -46,11 +43,10 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-// This function generates static pages for each blog post at build time
-export const generateStaticParams = async () => {
+// This function is now synchronous (removed 'async')
+export function generateStaticParams() {
     const postsDirectory = path.join(process.cwd(), 'posts');
     const filenames = fs.readdirSync(postsDirectory);
-    // Ensure we only process markdown files
     const mdFilenames = filenames.filter(file => file.endsWith('.md'));
 
     return mdFilenames.map(filename => ({
@@ -58,12 +54,11 @@ export const generateStaticParams = async () => {
     }));
 };
 
-
-const PostPage = ({ params }: { params: { slug: string } }) => {
-  const { slug } = params;
+const PostPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
+  const resolvedParams = await params;
+  const { slug } = resolvedParams;
   const post = getPostContent(slug);
 
-  // If the post doesn't exist, trigger the 404 page
   if (!post) {
     notFound();
   }
