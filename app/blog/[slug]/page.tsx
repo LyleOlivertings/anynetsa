@@ -5,7 +5,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import BlogPostLayout from '@/components/BlogPostLayout';
 
-// Define the Frontmatter type for type-safety
+
 interface Frontmatter {
   title: string;
   date: string;
