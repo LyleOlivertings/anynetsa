@@ -1,14 +1,40 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-html {
-  scroll-behavior: smooth;
+@theme {
+  /* Define your Custom Colors */
+  --color-background: #0F172A;
+  --color-surface: #1E293B;
+  --color-primary: #3B82F6;
+  --color-secondary: #64748B;
+  --color-accent: #8B5CF6;
+  --color-accent-hover: #7C3AED;
+  --color-text: #F1F5F9;
+  --color-text-muted: #94A3B8;
+
+  /* Define your Custom Animations */
+  --animate-blob: blob 7s infinite;
+
+  @keyframes blob {
+    0% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+    100% { transform: translate(0px, 0px) scale(1); }
+  }
+
+  /* Define your Custom Background Images */
+  --background-image-hero-glow: conic-gradient(from 180deg at 50% 50%, #3B82F6 0deg, #8B5CF6 180deg, #3B82F6 360deg);
 }
 
-body {
-  @apply bg-background text-text antialiased;
-  overflow-x: hidden;
+/* Utility classes for smooth scrolling and scrollbars */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-background text-text antialiased;
+    overflow-x: hidden;
+  }
 }
 
 /* Custom Scrollbar */

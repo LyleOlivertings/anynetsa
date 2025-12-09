@@ -46,7 +46,7 @@ const portfolioData = [
     title: "AGFLC",
     description: "An informational website for a faith-based organization, providing a clear and accessible platform for their vision and programs.",
     imageUrl: "https://placehold.co/600x400/1E1E1E/E0E0E0?text=AGFLC",
-    liveUrl: "https://agflc.vercel.app/",
+    liveUrl: "https://agflc.co.za/",
   },
 ];
 

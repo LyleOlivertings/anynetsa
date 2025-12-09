@@ -3,9 +3,8 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image"; // Added Image import
 import { Menu, X } from "lucide-react";
-// Removed Image import if you want to use text branding to match the "modern" request exactly, 
-// otherwise keep Image and your logo path. I will use text for the demo to ensure it matches the "ANYNET" styling.
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -41,9 +40,23 @@ const Header = () => {
       >
         <div className="container mx-auto px-6 flex items-center justify-between h-16">
           {/* Logo Branding */}
-          <Link href="/" className="text-2xl font-bold tracking-tighter group">
-            <span className="text-primary group-hover:text-accent transition-colors duration-300">ANY</span>
-            <span className="text-text">NET</span>
+          <Link href="/" className="flex items-center gap-3 group">
+            {/* Image Logo */}
+            <div className="relative w-10 h-10 md:w-12 md:h-12 transition-transform duration-300 group-hover:scale-110">
+              <Image 
+                src="/logo5.png" // Ensure this matches your file name in the public folder
+                alt="AnyNet SA Logo"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+            
+            {/* Text Branding */}
+            <div className="text-2xl font-bold tracking-tighter">
+              <span className="text-primary group-hover:text-accent transition-colors duration-300">ANY</span>
+              <span className="text-text">NET</span>
+            </div>
           </Link>
 
           {/* Desktop Nav */}
