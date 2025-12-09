@@ -1,39 +1,53 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 const Hero = () => {
   return (
-    <section className="relative h-[80vh] flex items-center justify-center text-center overflow-hidden">
-      <div className="absolute inset-0 bg-primary opacity-50 z-0"></div>
-      <div className="z-10 container mx-auto px-4">
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+      {/* Animated Background Blobs */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary/20 rounded-full blur-[100px] animate-blob mix-blend-screen"></div>
+        <div className="absolute top-[20%] right-[-10%] w-[500px] h-[500px] bg-accent/20 rounded-full blur-[100px] animate-blob animation-delay-2000 mix-blend-screen"></div>
+        <div className="absolute bottom-[-10%] left-[20%] w-[600px] h-[600px] bg-indigo-500/20 rounded-full blur-[100px] animate-blob animation-delay-4000 mix-blend-screen"></div>
+        {/* Grid Pattern Overlay */}
+        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-10"></div>
+      </div>
+
+      <div className="container mx-auto px-6 relative z-10 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-5xl md:text-7xl font-extrabold mb-4"
         >
-          Modern Websites for Your Business
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-xl md:text-2xl text-text-secondary max-w-3xl mx-auto mb-8"
-        >
-          We build fast, responsive, and beautiful websites to help your business grow online.
-        </motion.p>
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-        >
-          <Link
-            href="#contact"
-            className="bg-accent hover:bg-accent-hover text-white font-bold py-3 px-8 rounded-lg text-lg transition-transform transform hover:scale-105"
-          >
-            Let's Build Together
-          </Link>
+          <span className="inline-block py-1 px-3 rounded-full bg-white/5 border border-white/10 text-primary text-sm font-semibold mb-6 backdrop-blur-sm">
+            Future-Proof Web Development
+          </span>
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-gray-400">
+            Elevate Your <br className="hidden md:block" />
+            <span className="text-primary">Digital Presence</span>
+          </h1>
+          <p className="text-xl text-text-muted max-w-2xl mx-auto mb-10 leading-relaxed">
+            We craft high-performance, stunning websites that convert visitors into customers. 
+            Fast, secure, and tailored to your brand.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link
+              href="#contact"
+              className="group relative px-8 py-4 bg-primary hover:bg-primary/90 text-white font-bold rounded-full transition-all hover:shadow-[0_0_40px_-10px_rgba(59,130,246,0.5)] flex items-center"
+            >
+              Start Your Project
+              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <Link
+              href="/our-work"
+              className="px-8 py-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 font-bold rounded-full transition-all backdrop-blur-sm"
+            >
+              View Portfolio
+            </Link>
+          </div>
         </motion.div>
       </div>
     </section>
