@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image"; // Import Image
 import { Linkedin, Twitter, Github } from "lucide-react";
 
 const Footer = () => {
@@ -11,9 +12,21 @@ const Footer = () => {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div className="col-span-1 md:col-span-2">
-            <Link href="/" className="text-2xl font-bold tracking-tighter mb-4 block">
-              <span className="text-primary">ANY</span><span className="text-white">NET</span>
+            {/* Logo Section */}
+            <Link href="/" className="flex items-center gap-2 mb-4 group">
+              <div className="relative w-8 h-8 md:w-10 md:h-10 transition-transform duration-300 group-hover:scale-110">
+                <Image 
+                  src="/logo5.png" 
+                  alt="AnyNet SA Logo"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+              <div className="text-2xl font-bold tracking-tighter">
+                <span className="text-primary">ANY</span><span className="text-white">NET</span>
+              </div>
             </Link>
+            
             <p className="text-text-muted max-w-sm leading-relaxed">
               Empowering businesses with modern, scalable, and secure web solutions. 
               Built for the future of the web.
@@ -40,16 +53,12 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center">
-          {/* OFFICIAL REGISTRATION NAME USED HERE ONLY */}
+          {/* Official Registered Name */}
           <p className="text-text-muted text-sm mb-4 md:mb-0">
             &copy; {currentYear} ANYNET SA (Pty) Ltd. All rights reserved.
           </p>
           
-          <div className="flex space-x-6">
-            <a href="#" className="text-text-muted hover:text-white transition-colors"><Linkedin size={20} /></a>
-            <a href="#" className="text-text-muted hover:text-white transition-colors"><Twitter size={20} /></a>
-            <a href="#" className="text-text-muted hover:text-white transition-colors"><Github size={20} /></a>
-          </div>
+
         </div>
       </div>
     </footer>

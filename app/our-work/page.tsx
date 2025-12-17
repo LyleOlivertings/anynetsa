@@ -1,57 +1,102 @@
 import OurWorkClientPage from "@/components/OurWorkClientPage";
 import { Metadata } from 'next';
 
-// This is a Server Component, so we can export metadata
 export const metadata: Metadata = {
-    title: 'Our Work - AnyNet SA | Web Design & Development',
-    description: 'Check out some of the projects we\'ve recently launched for our amazing clients.',
+    title: 'Our Work - AnyNet SA | Digital Portfolio',
+    description: 'Explore our portfolio of custom websites, ticketing systems, and school portals. All built with user-friendly CMS integration.',
 };
 
-// Data can be defined directly in a Server Component
-const portfolioData = [
+// Data Structure
+export type Category = "All" | "Corporate" | "Schools" | "Internal";
+
+export interface PortfolioItem {
+  title: string;
+  category: Category;
+  description: string;
+  liveUrl: string;
+  imageUrl?: string; // Optional: If empty, we generate a placeholder
+  features?: string[];
+}
+
+const portfolioData: PortfolioItem[] = [
+  // --- CORPORATE & EVENTS ---
   {
-    title: "Scottsdene High School",
-    description: "A modern, comprehensive informational hub for students, parents, and staff, featuring a clean design and easy navigation.",
-    liveUrl: "https://scottsdenehigh.vercel.app/",
-  },
-  {
-    title: "SD Content Management System",
-    description: "A custom-built CMS empowering school staff to manage website content, news, and events effortlessly.",
-    liveUrl: "https://sd-cms.vercel.app/",
-  },
-  {
-    title: "Muizenberg High School",
-    description: "A professional and engaging website serving as a central source for school information, admissions, and community updates.",
-    liveUrl: "https://www.muizenberghigh.org/",
-  },
-  {
-    title: "St James Primary School",
-    description: "A vibrant and welcoming website for St James R.C. Primary, providing essential information for parents and showcasing the school's ethos.",
-    imageUrl: "https://placehold.co/600x400/1E1E1E/E0E0E0?text=St+James+Primary",
-    liveUrl: "https://st-james-primary-school.vercel.app/",
-  },
-  {
-    title: "MDT Inc.",
-    description: "A sleek, corporate site for a community-focused trust, effectively communicating their mission, projects, and impact.",
-    imageUrl: "https://placehold.co/600x400/1E1E1E/E0E0E0?text=MDT+Inc.",
+    title: "Miller Du Toit (MDT Inc.)",
+    category: "Corporate",
+    description: "A professional corporate identity website for Miller Du Toit Inc., showcasing their legal expertise and services.",
     liveUrl: "https://mdtinc.vercel.app/",
+    features: ["CMS Integrated", "Service Showcase"],
+  },
+  {
+    title: "Annual Global Family Law Conference",
+    category: "Corporate",
+    description: "A comprehensive event platform featuring a full ticketing system, speaker management, and dynamic scheduling.",
+    liveUrl: "https://www.agflc.co.za/",
+    features: ["Ticketing System", "Full CMS", "Event Management"],
   },
   {
     title: "FLAFSA",
-    description: "A dedicated web portal for a professional forum that facilitates communication, shares resources, and promotes events.",
-    imageUrl: "https://placehold.co/600x400/1E1E1E/E0E0E0?text=FLAFSA",
-    liveUrl: "https://flafsa.vercel.app/",
+    category: "Corporate",
+    description: "The Family Law Arbitration Federation of South Africa. A resource-heavy portal for legal professionals.",
+    liveUrl: "https://www.flafsa.co.za/",
+    features: ["Document Hub", "Member Portal", "CMS Integrated"],
   },
   {
-    title: "AGFLC",
-    description: "An informational website for a faith-based organization, providing a clear and accessible platform for their vision and programs.",
-    imageUrl: "https://placehold.co/600x400/1E1E1E/E0E0E0?text=AGFLC",
-    liveUrl: "https://agflc.co.za/",
+    title: "Peak Pursuit Consulting",
+    category: "Corporate",
+    description: "A high-performance landing page for a business consulting firm, designed to convert leads and showcase authority.",
+    liveUrl: "https://www.peakpursuit.co.za/",
+    features: ["Lead Generation", "CMS Integrated"],
+  },
+  {
+    title: "TnT Infrastructure",
+    category: "Corporate",
+    description: "Industrial portfolio website for an infrastructure company, highlighting large-scale projects and capabilities.",
+    liveUrl: "https://www.tnt-infra.co.za/",
+    features: ["Project Gallery", "CMS Integrated"],
+  },
+
+  // --- SCHOOLS ---
+  {
+    title: "Scottsdene High School",
+    category: "Schools",
+    description: "A vibrant digital hub for students and parents, featuring news updates, resources, and announcements.",
+    liveUrl: "https://www.scottsdenehigh.co.za/",
+    features: ["Student Portal", "News CMS", "Events Calendar"],
+  },
+  {
+    title: "Glendale High School",
+    category: "Schools",
+    description: "Modern educational platform providing easy access to school policies, staff information, and academic schedules.",
+    liveUrl: "https://www.glendalehigh.co.za/",
+    features: ["Staff Directory", "CMS Integrated", "Downloads"],
+  },
+  {
+    title: "St James Primary School",
+    category: "Schools",
+    description: "Welcoming and colorful website for primary education, focused on community engagement and parental information.",
+    liveUrl: "https://www.stjamesprimary.org.za/",
+    features: ["Gallery", "Newsletter", "CMS Integrated"],
+  },
+  {
+    title: "Muizenberg High School",
+    category: "Schools",
+    description: "A prestigious and history-rich website serving as the central communication point for the Muizenberg High community.",
+    liveUrl: "https://www.muizenberghigh.org/",
+    features: ["Alumni Network", "Admissions", "CMS Integrated"],
+  },
+
+  // --- INTERNAL PROJECTS ---
+  {
+    title: "AnyNet Quote System",
+    category: "Internal",
+    description: "Our proprietary automated quoting engine. It allows users to generate instant web development estimates.",
+    liveUrl: "https://quote-gen-snowy-three.vercel.app/",
+    features: ["React App", "Dynamic Calculation", "PDF Generation"],
   },
 ];
 
 const OurWorkPage = () => {
-  // Pass the data as a prop to the client component
   return <OurWorkClientPage portfolioData={portfolioData} />;
 };
 

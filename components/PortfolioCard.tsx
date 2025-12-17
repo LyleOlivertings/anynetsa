@@ -1,59 +1,63 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Database, Layout } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { PortfolioItem } from "@/app/our-work/page";
 
-type PortfolioCardProps = {
-  title: string;
-  description: string;
-  imageUrl: string;
-  liveUrl: string;
-};
+const PortfolioCard = ({ title, description, liveUrl, features }: PortfolioItem) => {
+  // Use a placeholder service for visual consistency if no specific image is provided.
+  // In production, replace 'imageUrl' in your data with actual paths to screenshots in /public
+  const placeholderImage = `https://placehold.co/600x400/1E293B/3B82F6?text=${encodeURIComponent(title)}`;
 
-import { Variants } from "framer-motion";
-
-const cardVariants: Variants = {
-  hidden: { y: 50, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.6,
-      ease: "easeInOut" as const,
-    },
-  },
-};
-
-const PortfolioCard = ({ title, description, imageUrl, liveUrl }: PortfolioCardProps) => {
   return (
     <motion.div
-      variants={cardVariants}
-      className="bg-secondary rounded-lg overflow-hidden border border-gray-700 group transition-all duration-300 hover:border-accent hover:shadow-2xl hover:shadow-accent/10"
+      layout
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      transition={{ duration: 0.3 }}
+      className="group bg-surface/40 backdrop-blur-md rounded-2xl overflow-hidden border border-white/10 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 flex flex-col h-full"
     >
-      <div className="relative overflow-hidden h-56">
+      {/* Image Container with Overlay */}
+      <div className="relative h-56 overflow-hidden">
         <Image
           unoptimized
-          src={imageUrl}
+          src={placeholderImage}
           alt={`Screenshot of ${title}`}
-          width={600}
-          height={400}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          fill
+          className="object-cover transition-transform duration-700 group-hover:scale-110"
         />
+        <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all duration-500" />
+        
+        {/* Live Site Button (appears on hover) */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+             <Link
+                href={liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white text-black px-6 py-2 rounded-full font-bold flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 hover:bg-primary hover:text-white"
+            >
+                Visit Website <ExternalLink size={16} />
+            </Link>
+        </div>
       </div>
-      <div className="p-6">
-        <h3 className="text-2xl font-bold mb-2">{title}</h3>
-        <p className="text-text-secondary mb-4">{description}</p>
-        <Link
-          href={liveUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center font-semibold text-accent hover:text-white transition-colors"
-        >
-          Visit Site
-          <ExternalLink className="ml-2 h-4 w-4" />
-        </Link>
+
+      {/* Content */}
+      <div className="p-6 flex flex-col flex-grow">
+        <h3 className="text-xl font-bold mb-3 text-white group-hover:text-primary transition-colors">{title}</h3>
+        <p className="text-text-muted text-sm leading-relaxed mb-6 flex-grow">{description}</p>
+        
+        {/* Features / Tech Stack */}
+        <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-white/5">
+            {features?.map((feature, i) => (
+                <span key={i} className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-white/5 border border-white/5 text-xs text-text-muted">
+                    {feature === "CMS Integrated" ? <Database size={10} className="text-accent" /> : <Layout size={10} />}
+                    {feature}
+                </span>
+            ))}
+        </div>
       </div>
     </motion.div>
   );
