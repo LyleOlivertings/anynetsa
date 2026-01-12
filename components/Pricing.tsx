@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
+import Link from "next/link"; //
 
 const pricingOptions = [
   {
@@ -78,13 +79,16 @@ const Pricing = () => {
                 ))}
               </ul>
 
-              <button className={`w-full py-3 rounded-lg font-bold transition-all ${
-                option.highlight 
-                  ? "bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/25" 
-                  : "bg-white/10 hover:bg-white/20 text-white"
-              }`}>
+              <Link 
+                href={`/contact?subject=${encodeURIComponent(option.title + " Plan")}`}
+                className={`block w-full text-center py-3 rounded-lg font-bold transition-all ${
+                  option.highlight 
+                    ? "bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/25" 
+                    : "bg-white/10 hover:bg-white/20 text-white"
+                }`}
+              >
                 Choose Plan
-              </button>
+              </Link>
             </motion.div>
           ))}
         </div>

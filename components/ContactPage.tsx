@@ -1,11 +1,21 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { Send, Loader2, Mail, Phone, MapPin, CheckCircle2, AlertCircle, ArrowRight, MessageSquare } from "lucide-react";
 
-const ContactPage = () => {
+const ContactFormContent = () => {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
+  
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const subjectParam = searchParams.get("subject");
+    if (subjectParam) {
+      setFormData(prev => ({ ...prev, subject: subjectParam }));
+    }
+  }, [searchParams]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -241,5 +251,19 @@ const ContactInfoBlock = ({ icon, label, value, href }: any) => (
     </div>
   </a>
 );
+
+// --- Main Export with Suspense ---
+
+const ContactPage = () => {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="animate-spin text-primary w-10 h-10" />
+      </div>
+    }>
+      <ContactFormContent />
+    </Suspense>
+  );
+};
 
 export default ContactPage;
