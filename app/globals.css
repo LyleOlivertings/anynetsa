@@ -50,3 +50,9 @@
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-secondary;
 }
+
+/* OPTIMIZATION: Hardware Acceleration Hint */
+.animate-blob {
+  will-change: transform;
+  transform: translateZ(0); /* Triggers GPU composition */
+}

@@ -6,22 +6,28 @@ import { ArrowRight } from "lucide-react";
 const Hero = () => {
   return (
     <section className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden pt-20">
-      {/* Animated Background Blobs - Explicitly set to z-0 */}
+      {/* OPTIMIZED BACKGROUND BLOBS:
+        1. Removed 'mix-blend-screen' (High GPU cost on mobile)
+        2. Reduced blur to 'blur-3xl'
+        3. Added 'transform-gpu' for hardware acceleration
+        4. Lowered opacity slightly to maintain aesthetic without blend modes
+      */}
       <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary/20 rounded-full blur-[100px] animate-blob mix-blend-screen"></div>
-        <div className="absolute top-[20%] right-[-10%] w-[500px] h-[500px] bg-accent/20 rounded-full blur-[100px] animate-blob animation-delay-2000 mix-blend-screen"></div>
-        <div className="absolute bottom-[-10%] left-[20%] w-[600px] h-[600px] bg-indigo-500/20 rounded-full blur-[100px] animate-blob animation-delay-4000 mix-blend-screen"></div>
-        {/* Grid Pattern Overlay */}
+        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary/20 rounded-full blur-3xl animate-blob transform-gpu opacity-70"></div>
+        <div className="absolute top-[20%] right-[-10%] w-[500px] h-[500px] bg-accent/20 rounded-full blur-3xl animate-blob animation-delay-2000 transform-gpu opacity-70"></div>
+        <div className="absolute bottom-[-10%] left-[20%] w-[600px] h-[600px] bg-indigo-500/20 rounded-full blur-3xl animate-blob animation-delay-4000 transform-gpu opacity-70"></div>
+        
+        {/* Grid Pattern */}
         <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-10"></div>
       </div>
 
-      {/* Content Container - Explicitly set to z-10 to sit above blobs */}
+      {/* Content Container - z-10 ensures it's clickable and visible */}
       <div className="container mx-auto px-6 relative z-10 text-center">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }} // Ensures animation runs once and stays visible
+          transition={{ duration: 0.5, ease: "easeOut" }} // Faster animation (0.5s vs 0.8s)
+          viewport={{ once: true }}
         >
           <span className="inline-block py-1 px-3 rounded-full bg-white/5 border border-white/10 text-primary text-sm font-semibold mb-6 backdrop-blur-sm">
             Future-Proof Web Development
