@@ -20,27 +20,27 @@ export interface PortfolioItem {
 
 const portfolioData: PortfolioItem[] = [
   // --- CORPORATE & EVENTS ---
-  {
-    title: "Miller Du Toit (MDT Inc.)",
-    category: "Corporate",
-    description: "A professional corporate identity website for Miller Du Toit Inc., showcasing their legal expertise and services.",
-    liveUrl: "https://mdtinc.vercel.app/",
-    features: ["CMS Integrated", "Service Showcase"],
-  },
-  {
-    title: "Annual Global Family Law Conference",
-    category: "Corporate",
-    description: "A comprehensive event platform featuring a full ticketing system, speaker management, and dynamic scheduling.",
-    liveUrl: "https://www.agflc.co.za/",
-    features: ["Ticketing System", "Full CMS", "Event Management"],
-  },
-  {
-    title: "FLAFSA",
-    category: "Corporate",
-    description: "The Family Law Arbitration Federation of South Africa. A resource-heavy portal for legal professionals.",
-    liveUrl: "https://www.flafsa.co.za/",
-    features: ["Document Hub", "Member Portal", "CMS Integrated"],
-  },
+  // {
+  //   title: "Miller Du Toit (MDT Inc.)",
+  //   category: "Corporate",
+  //   description: "A professional corporate identity website for Miller Du Toit Inc., showcasing their legal expertise and services.",
+  //   liveUrl: "https://mdtinc.vercel.app/",
+  //   features: ["CMS Integrated", "Service Showcase"],
+  // },
+  // {
+  //   title: "Annual Global Family Law Conference",
+  //   category: "Corporate",
+  //   description: "A comprehensive event platform featuring a full ticketing system, speaker management, and dynamic scheduling.",
+  //   liveUrl: "https://www.agflc.co.za/",
+  //   features: ["Ticketing System", "Full CMS", "Event Management"],
+  // },
+  // {
+  //   title: "FLAFSA",
+  //   category: "Corporate",
+  //   description: "The Family Law Arbitration Federation of South Africa. A resource-heavy portal for legal professionals.",
+  //   liveUrl: "https://www.flafsa.co.za/",
+  //   features: ["Document Hub", "Member Portal", "CMS Integrated"],
+  // },
   {
     title: "Peak Pursuit Consulting",
     category: "Corporate",
@@ -54,6 +54,14 @@ const portfolioData: PortfolioItem[] = [
     description: "Industrial portfolio website for an infrastructure company, highlighting large-scale projects and capabilities.",
     liveUrl: "https://www.tnt-infra.co.za/",
     features: ["Project Gallery", "CMS Integrated"],
+  },
+
+  {
+    title: "BrightWire Electrical",
+    category: "Corporate",
+    description: "A modern and responsive website for an electrical services company, featuring service listings and contact forms.",
+    liveUrl: "https://www.brightwireelectrical.co.za/",
+    features: ["Service Listings", "Contact Form", "CMS Integrated"],
   },
 
   // --- SCHOOLS ---

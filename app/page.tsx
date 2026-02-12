@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-background overflow-x-hidden selection:bg-primary selection:text-white">
+    <div className="flex flex-col min-h-screen bg-background overflow-x-hidden selection:bg-primary selection:text-white">
       {/* Section Order:
         1. Hero: Grab attention
         2. Services: Show what you do (Icons)
@@ -25,6 +25,6 @@ export default function Home() {
       <About />
       <Pricing />
       <Contact />
-    </main>
+    </div>
   );
 }

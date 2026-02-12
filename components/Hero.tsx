@@ -5,9 +5,9 @@ import { ArrowRight } from "lucide-react";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      {/* Animated Background Blobs */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
+    <section className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden pt-20">
+      {/* Animated Background Blobs - Explicitly set to z-0 */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
         <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary/20 rounded-full blur-[100px] animate-blob mix-blend-screen"></div>
         <div className="absolute top-[20%] right-[-10%] w-[500px] h-[500px] bg-accent/20 rounded-full blur-[100px] animate-blob animation-delay-2000 mix-blend-screen"></div>
         <div className="absolute bottom-[-10%] left-[20%] w-[600px] h-[600px] bg-indigo-500/20 rounded-full blur-[100px] animate-blob animation-delay-4000 mix-blend-screen"></div>
@@ -15,16 +15,18 @@ const Hero = () => {
         <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-10"></div>
       </div>
 
+      {/* Content Container - Explicitly set to z-10 to sit above blobs */}
       <div className="container mx-auto px-6 relative z-10 text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
+          viewport={{ once: true }} // Ensures animation runs once and stays visible
         >
           <span className="inline-block py-1 px-3 rounded-full bg-white/5 border border-white/10 text-primary text-sm font-semibold mb-6 backdrop-blur-sm">
             Future-Proof Web Development
           </span>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-gray-400">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-gray-400 pb-2">
             Elevate Your <br className="hidden md:block" />
             <span className="text-primary">Digital Presence</span>
           </h1>
