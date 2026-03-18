@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 
 const navItems = [
@@ -42,14 +43,28 @@ const itemVariants = {
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
+
+  // The context is dark ONLY if we are on the homepage AND haven't scrolled down yet
+  const isHome = pathname === "/";
+  const isDarkContext = isHome && !isScrolled;
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener("scroll", handleScroll);
+    
+    // Check initial scroll position on mount
+    handleScroll();
+    
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
 
   return (
     <>
@@ -64,7 +79,7 @@ const Header = () => {
         <div 
           className={`w-full transition-all duration-500 flex items-center justify-between ${
             isScrolled 
-              ? "max-w-6xl mx-auto bg-zinc-950/80 backdrop-blur-xl border border-white/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.3)] rounded-full px-6 h-16" 
+              ? "max-w-6xl mx-auto bg-white/80 backdrop-blur-md border border-zinc-200 shadow-sm rounded-full px-6 h-16" 
               : "container mx-auto px-6 h-24 bg-transparent"
           }`}
         >
@@ -76,15 +91,21 @@ const Header = () => {
                 src="/logo5.png"
                 alt="AnyNet SA Logo"
                 fill
-                className="object-contain filter brightness-0 invert" // Forces the logo to be pure white
+                className={`object-contain transition-all duration-500 ${
+                  isDarkContext || isOpen ? "filter brightness-0 invert" : "filter brightness-0"
+                }`} 
                 priority
               />
             </div>
             
             {/* Text Branding */}
-            <div className="text-xl md:text-2xl font-black tracking-tighter text-white flex items-center">
+            <div className={`text-xl md:text-2xl font-black tracking-tighter flex items-center transition-colors duration-500 ${
+              isDarkContext || isOpen ? "text-white" : "text-zinc-950"
+            }`}>
               <span>ANY</span>
-              <span className="text-zinc-500 font-serif italic ml-0.5">NET</span>
+              <span className={`font-serif italic ml-0.5 transition-colors duration-500 ${
+                isDarkContext || isOpen ? "text-zinc-500" : "text-zinc-500"
+              }`}>NET</span>
             </div>
           </Link>
 
@@ -94,10 +115,16 @@ const Header = () => {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-sm font-semibold text-zinc-300 hover:text-white uppercase tracking-widest transition-colors duration-300 relative group"
+                className={`text-sm font-semibold uppercase tracking-widest transition-colors duration-300 relative group ${
+                  isDarkContext 
+                    ? "text-zinc-300 hover:text-white" 
+                    : "text-zinc-500 hover:text-zinc-950"
+                }`}
               >
                 {item.name}
-                <span className="absolute -bottom-1.5 left-0 w-0 h-[2px] bg-white transition-all duration-300 group-hover:w-full"></span>
+                <span className={`absolute -bottom-1.5 left-0 w-0 h-[2px] transition-all duration-300 group-hover:w-full ${
+                  isDarkContext ? "bg-white" : "bg-zinc-950"
+                }`}></span>
               </Link>
             ))}
           </nav>
@@ -106,7 +133,11 @@ const Header = () => {
           <div className="hidden md:block">
             <Link
               href="/#contact"
-              className="relative group overflow-hidden bg-white text-zinc-950 px-6 py-2.5 rounded-full font-bold text-sm uppercase tracking-widest transition-all duration-300 hover:scale-105"
+              className={`relative group overflow-hidden px-6 py-2.5 rounded-full font-bold text-sm uppercase tracking-widest transition-all duration-300 hover:scale-105 shadow-sm block ${
+                isDarkContext 
+                  ? "bg-white text-zinc-950" 
+                  : "bg-zinc-950 text-white hover:bg-zinc-800"
+              }`}
             >
               {/* RGB Hover Glow inside button */}
               <span className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-fuchsia-400 to-violet-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
@@ -118,8 +149,8 @@ const Header = () => {
           <div className="md:hidden z-50">
             <button 
               onClick={() => setIsOpen(!isOpen)} 
-              className={`p-2 rounded-full transition-colors ${
-                isScrolled || isOpen ? "text-white" : "text-white"
+              className={`p-2 rounded-full transition-colors duration-500 ${
+                isDarkContext || isOpen ? "text-white" : "text-zinc-950"
               }`}
             >
               {isOpen ? <X size={28} /> : <Menu size={28} />}
@@ -136,17 +167,22 @@ const Header = () => {
             initial="closed"
             animate="open"
             exit="closed"
-            className="fixed inset-0 z-40 bg-zinc-950/95 backdrop-blur-2xl flex flex-col justify-center items-center space-y-8"
+            className="fixed inset-0 z-40 bg-zinc-950/98 backdrop-blur-2xl flex flex-col justify-center items-center space-y-8"
           >
             {/* Decorative RGB Orbs for Mobile Menu */}
-            <div className="absolute top-20 left-10 w-64 h-64 bg-cyan-500/20 rounded-full blur-[100px] pointer-events-none"></div>
-            <div className="absolute bottom-20 right-10 w-64 h-64 bg-fuchsia-500/20 rounded-full blur-[100px] pointer-events-none"></div>
+            <div 
+              className="absolute top-20 left-10 w-64 h-64 rounded-full pointer-events-none"
+              style={{ background: 'radial-gradient(circle, rgba(34,211,238,0.15) 0%, rgba(255,255,255,0) 70%)' }}
+            ></div>
+            <div 
+              className="absolute bottom-20 right-10 w-64 h-64 rounded-full pointer-events-none"
+              style={{ background: 'radial-gradient(circle, rgba(217,70,239,0.15) 0%, rgba(255,255,255,0) 70%)' }}
+            ></div>
 
             {navItems.map((item) => (
               <motion.div key={item.name} variants={itemVariants}>
                 <Link
                   href={item.href}
-                  onClick={() => setIsOpen(false)}
                   className="text-4xl md:text-5xl font-black text-white hover:text-zinc-400 uppercase tracking-tighter transition-colors"
                 >
                   {item.name}
@@ -157,7 +193,6 @@ const Header = () => {
             <motion.div variants={itemVariants} className="pt-8">
               <Link
                 href="/#contact"
-                onClick={() => setIsOpen(false)}
                 className="relative group px-10 py-4 bg-white text-zinc-950 font-bold uppercase tracking-widest text-sm rounded-full shadow-[0_0_30px_rgba(255,255,255,0.1)] transition-all hover:scale-105 overflow-hidden block"
               >
                 <span className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-fuchsia-400 to-violet-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>

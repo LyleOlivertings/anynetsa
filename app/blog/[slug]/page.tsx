@@ -1,75 +1,47 @@
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import BlogPostLayout from '@/components/BlogPostLayout';
+import BlogPostLayout from "@/components/BlogPostLayout";
+import { Metadata } from "next";
 
-
-interface Frontmatter {
-  title: string;
-  date: string;
-  excerpt: string;
-  author: string;
-  image: string;
-}
-
-const getPostContent = (slug: string) => {
-  const folder = path.join(process.cwd(), 'posts');
-  const file = path.join(folder, `${slug}.md`);
-
-  try {
-    const content = fs.readFileSync(file, 'utf8');
-    const matterResult = matter(content);
-    return matterResult;
-  } catch (error) {
-    return null;
-  }
+// TODO: Replace with your actual fetching logic (e.g., fetching by slug from local markdown or CMS)
+const fetchPostBySlug = (slug: string) => {
+  return {
+    title: "The Future of Web Development in 2026",
+    date: "March 18, 2026",
+    category: "Development",
+    readTime: "5 min read",
+    content: `
+      <p>This is where your compiled HTML or markdown content will go. To keep the premium aesthetic, ensure you use the <strong>prose</strong> classes provided in the layout component.</p>
+      <h2>Why Speed Matters More Than Ever</h2>
+      <p>In 2026, user attention spans are shorter than ever, and Google's ranking algorithms heavily penalize slow applications. Building with Next.js and React Server Components ensures your payload is minimal and your Time to Interactive is immediate.</p>
+      <h3>Core Web Vitals are Non-Negotiable</h3>
+      <p>If your website takes more than 2 seconds to load, you are actively losing money. We focus on optimizing Largest Contentful Paint (LCP) and Cumulative Layout Shift (CLS) to guarantee a buttery smooth experience for every user.</p>
+      <blockquote>"The web of the future is fast, accessible, and deeply integrated with modern CMS architectures."</blockquote>
+      <p>By leveraging edge networks and static generation, we push the boundaries of what is possible in the browser.</p>
+    `
+  };
 };
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+// 1. Update params type to be a Promise and await it
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: Promise<{ slug: string }> 
+}): Promise<Metadata> {
   const resolvedParams = await params;
-  const post = getPostContent(resolvedParams.slug);
-
-  if (!post) {
-    return {
-      title: 'Post Not Found',
-    };
-  }
-
+  const post = fetchPostBySlug(resolvedParams.slug);
+  
   return {
-    title: `${post.data.title} - AnyNet SA Blog`,
-    description: post.data.excerpt,
+    title: `${post.title} | AnyNet SA Blog`,
   };
 }
 
-// This function is now synchronous (removed 'async')
-export function generateStaticParams() {
-    const postsDirectory = path.join(process.cwd(), 'posts');
-    const filenames = fs.readdirSync(postsDirectory);
-    const mdFilenames = filenames.filter(file => file.endsWith('.md'));
-
-    return mdFilenames.map(filename => ({
-        slug: filename.replace('.md', ''),
-    }));
-};
-
-const PostPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
+// 2. Make the page async, update the params type, and await it
+export default async function SinglePostPage({ 
+  params 
+}: { 
+  params: Promise<{ slug: string }> 
+}) {
   const resolvedParams = await params;
-  const { slug } = resolvedParams;
-  const post = getPostContent(slug);
+  const post = fetchPostBySlug(resolvedParams.slug);
 
-  if (!post) {
-    notFound();
-  }
-
-  const { data, content } = post;
-
-  return (
-    <div className="bg-background">
-      <BlogPostLayout frontmatter={data as Frontmatter} content={content} />
-    </div>
-  );
-};
-
-export default PostPage;
+  return <BlogPostLayout post={post} />;
+}

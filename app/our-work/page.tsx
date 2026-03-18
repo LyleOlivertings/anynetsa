@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 };
 
 // Data Structure
-export type Category = "All" | "Corporate" | "Schools" | "Internal";
+export type Category = "All" | "Corporate" | "Schools" | "NGO" | "Internal";
 
 export interface PortfolioItem {
   title: string;
@@ -20,27 +20,13 @@ export interface PortfolioItem {
 
 const portfolioData: PortfolioItem[] = [
   // --- CORPORATE & EVENTS ---
-  // {
-  //   title: "Miller Du Toit (MDT Inc.)",
-  //   category: "Corporate",
-  //   description: "A professional corporate identity website for Miller Du Toit Inc., showcasing their legal expertise and services.",
-  //   liveUrl: "https://mdtinc.vercel.app/",
-  //   features: ["CMS Integrated", "Service Showcase"],
-  // },
-  // {
-  //   title: "Annual Global Family Law Conference",
-  //   category: "Corporate",
-  //   description: "A comprehensive event platform featuring a full ticketing system, speaker management, and dynamic scheduling.",
-  //   liveUrl: "https://www.agflc.co.za/",
-  //   features: ["Ticketing System", "Full CMS", "Event Management"],
-  // },
-  // {
-  //   title: "FLAFSA",
-  //   category: "Corporate",
-  //   description: "The Family Law Arbitration Federation of South Africa. A resource-heavy portal for legal professionals.",
-  //   liveUrl: "https://www.flafsa.co.za/",
-  //   features: ["Document Hub", "Member Portal", "CMS Integrated"],
-  // },
+  {
+    title: "Annual Global Family Law Conference",
+    category: "Corporate",
+    description: "A comprehensive event platform developed for the Annual Global Family Law Conference, featuring a full ticketing system, speaker management, and dynamic scheduling.",
+    liveUrl: "https://www.agflc.co.za/",
+    features: ["Ticketing System", "Full CMS", "Event Management"],
+  },
   {
     title: "Peak Pursuit Consulting",
     category: "Corporate",
@@ -55,13 +41,28 @@ const portfolioData: PortfolioItem[] = [
     liveUrl: "https://www.tnt-infra.co.za/",
     features: ["Project Gallery", "CMS Integrated"],
   },
-
   {
     title: "BrightWire Electrical",
     category: "Corporate",
     description: "A modern and responsive website for an electrical services company, featuring service listings and contact forms.",
     liveUrl: "https://www.brightwireelectrical.co.za/",
     features: ["Service Listings", "Contact Form", "CMS Integrated"],
+  },
+
+  // --- NGOs ---
+  {
+    title: "The Bridge of Good Works",
+    category: "NGO",
+    description: "An impactful, user-centric website built for The Bridge of Good Works, designed to drive community support, manage resources, and amplify their storytelling.",
+    liveUrl: "https://www.thebridgegw.co.za/",
+    features: ["Community Hub", "CMS Integrated", "Resource Management"],
+  },
+  {
+    title: "ACASAI",
+    category: "NGO",
+    description: "A professional and accessible digital presence designed for ACASAI, facilitating community engagement, awareness campaigns, and organizational updates.",
+    liveUrl: "https://www.acasai.co.za/",
+    features: ["CMS Integrated", "Accessible Design", "News Portal"],
   },
 
   // --- SCHOOLS ---

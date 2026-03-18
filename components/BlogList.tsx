@@ -1,127 +1,110 @@
 "use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
-import { Search, Clock, ArrowUpRight } from 'lucide-react';
-
-interface Frontmatter {
-  title: string;
-  date: string;
-  excerpt: string;
-  author: string;
-  image: string;
-}
-
-interface Post {
-  slug: string;
-  frontmatter: Frontmatter;
-  content: string;
-}
+import { motion } from "framer-motion";
+import Link from "next/link";
+import Image from "next/image";
+import { Calendar, Clock, ArrowRight } from "lucide-react";
+import { BlogPost } from "@/app/blog/page";
 
 interface BlogListProps {
-  posts: Post[];
+  posts: BlogPost[];
 }
 
-const calculateReadingTime = (content: string) => {
-  const wordsPerMinute = 200;
-  const words = content.trim().split(/\s+/).length;
-  return Math.ceil(words / wordsPerMinute);
-};
-
-const BlogList: React.FC<BlogListProps> = ({ posts }) => {
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const filteredPosts = posts.filter((post) =>
-    post.frontmatter.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    post.frontmatter.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
+const BlogList = ({ posts }: BlogListProps) => {
   return (
-    <div>
-      {/* Search Bar */}
-      <div className="mb-10 relative max-w-md">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <Search className="h-5 w-5 text-text-muted" />
+    <div className="font-sans antialiased overflow-hidden">
+      
+      {/* 1. HERO SECTION (DARK) - Accommodates transparent header */}
+      <section className="relative pt-40 pb-32 px-6 bg-zinc-950 text-white min-h-[60vh] flex items-center justify-center">
+        {/* Performance Optimized Background Glows */}
+        <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
+          <div 
+            className="absolute top-[10%] left-[20%] w-[600px] h-[600px] rounded-full"
+            style={{ background: 'radial-gradient(circle, rgba(34,211,238,0.15) 0%, rgba(255,255,255,0) 70%)' }}
+          ></div>
+          <div 
+            className="absolute bottom-[10%] right-[20%] w-[600px] h-[600px] rounded-full"
+            style={{ background: 'radial-gradient(circle, rgba(217,70,239,0.15) 0%, rgba(255,255,255,0) 70%)' }}
+          ></div>
+          <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-[0.03] invert"></div>
         </div>
-        <input
-          type="text"
-          placeholder="Search articles..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="block w-full pl-10 pr-3 py-3 border border-white/10 rounded-xl leading-5 bg-surface/50 text-text placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition duration-150 ease-in-out backdrop-blur-sm"
-        />
-      </div>
 
-      {/* Blog Grid */}
-      <motion.div 
-        layout
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-      >
-        <AnimatePresence>
-            {filteredPosts.length > 0 ? (
-                filteredPosts.map((post) => (
-                <motion.div
-                    layout
-                    key={post.slug}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.3 }}
-                    whileHover={{ y: -5 }}
-                >
-                    <Link href={`/blog/${post.slug}`} className="group h-full block">
-                    <div className="h-full bg-surface/30 rounded-2xl border border-white/5 overflow-hidden backdrop-blur-sm flex flex-col transition-all duration-300 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5">
-                        {/* Image Container */}
-                        <div className="relative h-48 w-full overflow-hidden">
-                            <Image
-                                src={post.frontmatter.image}
-                                alt={post.frontmatter.title}
-                                fill
-                                className="object-cover transition-transform duration-500 group-hover:scale-110"
-                            />
-                            <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
-                            
-                            {/* Floating Category Badge (Optional/Mock) */}
-                            <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-md px-3 py-1 rounded-full text-xs font-medium text-white border border-white/10">
-                                Article
-                            </div>
-                        </div>
+        <div className="container mx-auto text-center max-w-4xl relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="flex flex-col items-center"
+          >
+            <span className="inline-block py-1.5 px-4 rounded-full bg-white/5 border border-white/10 text-zinc-300 text-xs tracking-widest uppercase font-semibold mb-8 backdrop-blur-md">
+                News & Insights
+            </span>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
+                OUR <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-100 via-zinc-400 to-zinc-600">THOUGHTS.</span>
+            </h1>
+            <p className="text-lg md:text-xl text-zinc-400 leading-relaxed max-w-2xl mx-auto font-light">
+                Deep dives into web development, SEO strategies, and the future of digital experiences.
+            </p>
+          </motion.div>
+        </div>
+      </section>
 
-                        {/* Content */}
-                        <div className="p-6 flex flex-col flex-grow">
-                            <div className="flex justify-between items-center text-xs text-text-muted mb-3">
-                                <span>{new Date(post.frontmatter.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                                <span className="flex items-center gap-1"><Clock size={12}/> {calculateReadingTime(post.content)} min</span>
-                            </div>
-                            
-                            <h2 className="text-xl font-bold mb-3 line-clamp-2 group-hover:text-primary transition-colors">
-                                {post.frontmatter.title}
-                            </h2>
-                            
-                            <p className="text-text-muted text-sm line-clamp-3 mb-6 flex-grow">
-                                {post.frontmatter.excerpt}
-                            </p>
-                            
-                            <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                                <span className="text-sm font-medium text-text">Read More</span>
-                                <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all">
-                                    <ArrowUpRight size={16} />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </Link>
-                </motion.div>
-                ))
-            ) : (
-                <div className="col-span-full text-center py-20 text-text-muted">
-                    No posts found matching your search.
+      {/* 2. BLOG GRID (LIGHT) */}
+      <section className="py-32 relative bg-zinc-50 text-zinc-950 min-h-screen">
+        <div className="container mx-auto px-6 max-w-7xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {posts.map((post, index) => (
+              <motion.div 
+                key={post.slug}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: index * 0.1, duration: 0.5, ease: "easeOut" }}
+                className="group relative bg-white/80 backdrop-blur-md rounded-3xl overflow-hidden border border-zinc-200 hover:border-zinc-300 transition-all duration-300 flex flex-col h-full shadow-xl shadow-zinc-200/50 will-change-transform"
+              >
+                {/* Image Container */}
+                <div className="relative h-56 overflow-hidden z-10 bg-zinc-100">
+                  <Image
+                    unoptimized
+                    src={post.imageUrl}
+                    alt={post.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute top-4 left-4 z-20">
+                    <span className="px-3 py-1.5 rounded-lg bg-white/90 backdrop-blur-md border border-zinc-200 text-xs font-bold uppercase tracking-widest text-zinc-950 shadow-sm">
+                      {post.category}
+                    </span>
+                  </div>
                 </div>
-            )}
-        </AnimatePresence>
-      </motion.div>
+
+                {/* Content */}
+                <div className="p-8 flex flex-col flex-grow relative z-10 bg-gradient-to-b from-transparent to-white/50">
+                  <div className="flex items-center gap-4 text-xs font-semibold uppercase tracking-widest text-zinc-400 mb-4">
+                    <span className="flex items-center gap-1.5"><Calendar size={14} /> {post.date}</span>
+                    <span className="flex items-center gap-1.5"><Clock size={14} /> {post.readTime}</span>
+                  </div>
+                  
+                  <h3 className="text-2xl font-bold mb-3 text-zinc-950 group-hover:text-zinc-600 transition-colors duration-300 tracking-tight leading-snug">
+                    <Link href={`/blog/${post.slug}`} className="before:absolute before:inset-0">
+                      {post.title}
+                    </Link>
+                  </h3>
+                  
+                  <p className="text-zinc-600 text-sm leading-relaxed mb-8 flex-grow font-light">
+                    {post.excerpt}
+                  </p>
+                  
+                  <div className="mt-auto pt-5 border-t border-zinc-100 flex items-center text-sm font-bold text-zinc-950 uppercase tracking-widest group-hover:text-zinc-600 transition-colors">
+                    Read Article <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+      
     </div>
   );
 };
