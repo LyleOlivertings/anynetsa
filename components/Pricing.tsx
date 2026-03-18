@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
-import Link from "next/link"; //
+import Link from "next/link";
 
 const pricingOptions = [
   {
@@ -16,7 +16,7 @@ const pricingOptions = [
     price: "R5,500",
     description: "For growing companies that need to manage their own content.",
     features: ["5+ Pages", "Content Management System", "Blog Functionality", "Analytics Dashboard", "Social Media Integration", "1 Month Support"],
-    highlight: true, // This card will pop
+    highlight: true, 
   },
   {
     title: "Enterprise",
@@ -29,67 +29,75 @@ const pricingOptions = [
 
 const Pricing = () => {
   return (
-    <section className="py-24 bg-background relative" id="services">
+    <section className="py-32 bg-white border-t border-dashed border-zinc-200" id="pricing">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-24"
         >
-          <h2 className="text-4xl font-bold mb-4">Simple, Transparent Pricing</h2>
-          <p className="text-text-muted text-lg max-w-2xl mx-auto">
-            Choose the package that fits your needs. No hidden fees.
+          <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tighter uppercase text-zinc-950">Transparent <span className="text-zinc-400 font-serif italic normal-case">Pricing</span></h2>
+          <p className="text-zinc-500 text-lg max-w-2xl mx-auto font-light">
+            Choose the package that fits your needs. No hidden fees, no surprises.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {pricingOptions.map((option, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className={`relative p-8 rounded-2xl border ${
-                option.highlight 
-                  ? "bg-white/5 border-primary/50 shadow-2xl shadow-primary/10" 
-                  : "bg-surface/50 border-white/5 hover:border-white/10"
-              } backdrop-blur-sm transition-all duration-300 hover:-translate-y-2`}
-            >
+            <div key={index} className={`relative ${option.highlight ? 'z-10' : ''}`}>
+              {/* RGB Glow behind the highlighted card */}
               {option.highlight && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-primary to-accent text-white px-4 py-1 rounded-full text-sm font-bold">
-                  Most Popular
-                </div>
+                <div className="absolute -inset-1 bg-gradient-to-r from-cyan-400 via-fuchsia-400 to-violet-400 rounded-[2rem] blur opacity-30"></div>
               )}
-              <h3 className="text-2xl font-bold mb-2">{option.title}</h3>
-              <div className="flex items-baseline mb-4">
-                <span className="text-4xl font-extrabold text-white">{option.price}</span>
-              </div>
-              <p className="text-text-muted mb-8 text-sm leading-relaxed">{option.description}</p>
               
-              <ul className="space-y-4 mb-8">
-                {option.features.map((feature, i) => (
-                  <li key={i} className="flex items-center text-sm text-text-secondary">
-                    <div className={`mr-3 p-1 rounded-full ${option.highlight ? 'bg-primary/20 text-primary' : 'bg-white/10 text-white'}`}>
-                        <Check size={12} />
-                    </div>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-
-              <Link 
-                href={`/contact?subject=${encodeURIComponent(option.title + " Plan")}`}
-                className={`block w-full text-center py-3 rounded-lg font-bold transition-all ${
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className={`relative h-full p-10 rounded-3xl transition-all duration-300 flex flex-col ${
                   option.highlight 
-                    ? "bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/25" 
-                    : "bg-white/10 hover:bg-white/20 text-white"
+                    ? "bg-zinc-950 text-white scale-105" 
+                    : "bg-zinc-50 border border-zinc-200 text-zinc-950"
                 }`}
               >
-                Choose Plan
-              </Link>
-            </motion.div>
+                {option.highlight && (
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-white text-zinc-950 px-6 py-1.5 rounded-full text-xs uppercase tracking-widest font-bold shadow-lg shadow-white/10">
+                    Most Popular
+                  </div>
+                )}
+                <h3 className="text-2xl font-bold mb-2 tracking-tight">{option.title}</h3>
+                <div className="flex items-baseline mb-4 mt-6">
+                  <span className="text-5xl font-extrabold tracking-tighter">{option.price}</span>
+                </div>
+                <p className={`mb-8 text-sm leading-relaxed font-light pb-8 border-b ${option.highlight ? 'border-zinc-800 text-zinc-400' : 'border-zinc-200 text-zinc-500'}`}>
+                  {option.description}
+                </p>
+                
+                <ul className="space-y-5 mb-10 flex-grow">
+                  {option.features.map((feature, i) => (
+                    <li key={i} className={`flex items-center text-sm font-medium ${option.highlight ? 'text-zinc-300' : 'text-zinc-600'}`}>
+                      <div className={`mr-4 p-1 rounded-full ${option.highlight ? 'bg-white text-zinc-950' : 'bg-zinc-200 text-zinc-950'}`}>
+                          <Check size={14} strokeWidth={3} />
+                      </div>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+
+                <Link 
+                  href={`/contact?subject=${encodeURIComponent(option.title + " Plan")}`}
+                  className={`block w-full text-center py-4 rounded-xl font-bold transition-all ${
+                    option.highlight 
+                      ? "bg-white hover:bg-zinc-200 text-zinc-950" 
+                      : "bg-zinc-950 hover:bg-zinc-800 text-white"
+                  }`}
+                >
+                  Choose Plan
+                </Link>
+              </motion.div>
+            </div>
           ))}
         </div>
       </div>

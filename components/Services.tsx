@@ -4,44 +4,50 @@ import { Smartphone, Monitor, Database, Lock } from "lucide-react";
 
 const services = [
   {
-    icon: <Monitor className="w-8 h-8 text-primary" />,
+    num: "01",
+    icon: <Monitor className="w-6 h-6 text-zinc-950" />,
     title: "Web Development",
-    description: "Custom websites built from scratch to fit your exact business needs."
+    description: "Custom, lightning-fast websites built from scratch to fit your exact business needs and goals."
   },
   {
-    icon: <Smartphone className="w-8 h-8 text-accent" />,
+    num: "02",
+    icon: <Smartphone className="w-6 h-6 text-zinc-950" />,
     title: "Mobile Responsive",
-    description: "Flawless experiences across all devices, from desktops to smartphones."
+    description: "Flawless, intuitive experiences engineered across all devices, from desktops to smartphones."
   },
   {
-    icon: <Database className="w-8 h-8 text-primary" />,
+    num: "03",
+    icon: <Database className="w-6 h-6 text-zinc-950" />,
     title: "CMS Integration",
-    description: "Easy-to-use content management systems so you can update your own site."
+    description: "Empowering you with easy-to-use content management systems so you control your own site."
   },
   {
-    icon: <Lock className="w-8 h-8 text-accent" />,
+    num: "04",
+    icon: <Lock className="w-6 h-6 text-zinc-950" />,
     title: "Secure Hosting",
-    description: "Fast, secure, and reliable hosting solutions to keep your site online 24/7."
+    description: "Enterprise-grade, secure, and reliable hosting solutions to keep your site online 24/7/365."
   }
 ];
 
 const Services = () => {
   return (
-    <section className="py-20 bg-surface/30">
-      <div className="container mx-auto px-6">
+    <section className="py-32 bg-white relative">
+      <div className="container mx-auto px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-6"
         >
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">Our Expertise</h2>
-          <p className="text-lg text-text-muted max-w-2xl mx-auto">
-            Comprehensive digital solutions tailored for your success.
+          <div>
+            <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase text-zinc-950">Our <br/><span className="text-zinc-400">Expertise</span></h2>
+          </div>
+          <p className="text-lg text-zinc-500 max-w-md font-light leading-relaxed">
+            Comprehensive digital solutions tailored for your success. We don't just build websites; we build businesses.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {services.map((service, index) => (
             <motion.div
               key={index}
@@ -49,16 +55,22 @@ const Services = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              whileHover={{ y: -5 }}
-              className="p-6 rounded-2xl bg-background border border-white/5 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 transition-all group"
+              className="relative p-10 rounded-3xl bg-zinc-50 border border-zinc-200 hover:border-transparent hover:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05),0_0_20px_rgba(168,85,247,0.15)] transition-all duration-300 group overflow-hidden"
             >
-              <div className="mb-4 p-3 bg-white/5 rounded-lg inline-block group-hover:bg-white/10 transition-colors">
-                {service.icon}
+              {/* Giant Background Number */}
+              <div className="absolute -bottom-6 -right-4 text-[12rem] font-black text-zinc-100 group-hover:text-zinc-200 transition-colors leading-none pointer-events-none tracking-tighter">
+                {service.num}
               </div>
-              <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">{service.title}</h3>
-              <p className="text-text-muted text-sm leading-relaxed">
-                {service.description}
-              </p>
+              
+              <div className="relative z-10">
+                <div className="mb-8 p-4 bg-white rounded-full inline-block border border-zinc-200 group-hover:scale-110 group-hover:border-zinc-300 transition-transform">
+                  {service.icon}
+                </div>
+                <h3 className="text-2xl font-bold mb-4 text-zinc-950 tracking-tight">{service.title}</h3>
+                <p className="text-zinc-500 text-base leading-relaxed font-light max-w-sm">
+                  {service.description}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>
